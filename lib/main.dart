@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const SplashScreen(),
+      //home: HomePage(),
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => HomePage(),

@@ -15,13 +15,28 @@ class TopBar extends StatelessWidget {
               // Handle menu button pressed
             },
           ),
-          Text(
-            'Sialkot, Pakistan',
-            style: TextStyle(color: Colors.white, fontSize: 18),
+          InkWell(
+            onTap: () {
+              // Handle location text tapped
+              print('Location tapped');
+              // You can navigate to another screen or perform any action here
+            },
+            child: Text(
+              'Sialkot, Pakistan',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
           ),
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Icon(Icons.person, color: Color(0xFF3C7A17)),
+          InkWell(
+            onTap: () {
+              // Handle avatar tapped
+              print('Avatar tapped');
+              // You can navigate to profile screen or perform any action here
+            },
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/icons/avatar.png'),
+              backgroundColor: Colors.white,
+              radius: 20,
+            ),
           ),
         ],
       ),

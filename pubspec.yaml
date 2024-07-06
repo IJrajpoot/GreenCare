@@ -59,6 +59,11 @@ flutter:
     - assets/images/sunny.jpg
     - assets/images/camera.png
     - assets/images/weather.png
+    - assets/icons/help.png
+    - assets/icons/history.png
+    - assets/icons/image_upload.png
+    - assets/icons/weather_module.png
+    - assets/icons/avatar.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

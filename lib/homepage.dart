@@ -26,8 +26,9 @@ class HomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 20.0),
             WeatherCard(),
-            SizedBox(height: 16.0),
+            SizedBox(height: 20.0),
             GridMenu(),
           ],
         ),
@@ -98,7 +99,7 @@ class WeatherCard extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Forecast →',
+                    'Forecast ->',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -119,6 +120,7 @@ class GridMenu extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
+      childAspectRatio: 0.7,  // Adjusted aspect ratio to increase height
       children: [
         GridItem(
           imagePath: 'assets/images/camera.png',
@@ -151,21 +153,32 @@ class GridItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap(),
       child: Card(
-        margin: EdgeInsets.all(8.0),
+        margin: EdgeInsets.all(10.0),
         color: Color(0xFF3C7A17),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              imagePath,
-              height: 100, // Adjust the height as needed
-              fit: BoxFit.contain,
+            Container(
+              height: 180,  // Adjusted height of the image container
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.contain,
+              ),
             ),
             SizedBox(height: 8.0),
-            Text(
-              label,
-              style: TextStyle(color: Colors.white, fontSize: 16),
-              textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),
