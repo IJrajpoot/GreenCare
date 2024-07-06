@@ -26,7 +26,7 @@ class LoginPage extends StatelessWidget {
                 children: <Widget>[
                   const Center(
                     child: Text(
-                      'Login/Signup',
+                      'Login/Signin',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -61,17 +61,18 @@ class LoginPage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         // Handle login logic here
+                        Navigator.pushNamed(context, '/home');
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        backgroundColor: Colors.green,  // Change to your desired color
+                        backgroundColor: Color(0xFF3C7A17),  // Change to your desired color
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                       child: const Text(
                         'Login',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16, color: Colors.white,),
                       ),
                     ),
                   ),
