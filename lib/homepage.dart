@@ -37,7 +37,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-
 class WeatherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,7 @@ class WeatherCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 150,
+            height: 200,  // Increased the height of the image container
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
@@ -122,14 +121,14 @@ class GridMenu extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       children: [
         GridItem(
-          icon: Icons.camera_alt,
+          imagePath: 'assets/images/camera.png',
           label: 'Detect Green Disease',
           onTap: () {
             // Handle Detect Green Disease button tap
           },
         ),
         GridItem(
-          icon: Icons.cloud,
+          imagePath: 'assets/images/weather.png',
           label: 'Weather Updates',
           onTap: () {
             // Handle Weather Updates button tap
@@ -141,11 +140,11 @@ class GridMenu extends StatelessWidget {
 }
 
 class GridItem extends StatelessWidget {
-  final IconData icon;
+  final String imagePath;
   final String label;
   final Function onTap;
 
-  GridItem({required this.icon, required this.label, required this.onTap});
+  GridItem({required this.imagePath, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +156,11 @@ class GridItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 50, color: Colors.white),
+            Image.asset(
+              imagePath,
+              height: 100, // Adjust the height as needed
+              fit: BoxFit.contain,
+            ),
             SizedBox(height: 8.0),
             Text(
               label,
@@ -170,3 +173,4 @@ class GridItem extends StatelessWidget {
     );
   }
 }
+
