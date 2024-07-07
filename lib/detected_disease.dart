@@ -21,7 +21,6 @@ class _DetectedDiseaseScreenState extends State<DetectedDiseaseScreen> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 height: 250,

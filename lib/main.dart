@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:greencare/manage_profile.dart';
+import 'package:greencare/weather_forecast.dart';
 import 'splash_screen.dart';
 import 'login_page.dart';
 import 'homepage.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const ManageProfileScreen(),
+      home: WeatherForecastPage(),
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => HomePage(),
