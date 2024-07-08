@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NavBar extends StatefulWidget {
+  const NavBar({super.key});
+
   @override
   _NavBarState createState() => _NavBarState();
 }
@@ -12,7 +14,7 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-      color: Color(0xFF3C7A17),
+      color: const Color(0xFF3C7A17),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -71,7 +73,7 @@ class NavBarItem extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const NavBarItem({
+  const NavBarItem({super.key, 
     required this.iconPath,
     required this.isSelected,
     required this.onTap,
