@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'topbar.dart';
 import 'navbar.dart';
+import 'menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +28,7 @@ class HomePage extends StatelessWidget {
         preferredSize: Size.fromHeight(80.0),
         child: TopBar(),
       ),
+      drawer: MenuDrawer(userName: 'User'),
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'profile.dart';
+import 'menu.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,7 +15,7 @@ class TopBar extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.menu, color: Colors.white),
             onPressed: () {
-              // Handle menu button pressed
+              Scaffold.of(context).openDrawer();
             },
           ),
           InkWell(
