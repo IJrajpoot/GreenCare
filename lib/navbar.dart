@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'help.dart';
+import 'weather_forecast.dart';
+
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -34,6 +37,7 @@ class _NavBarState extends State<NavBar> {
             isSelected: _selectedIndex == 1,
             onTap: () {
               // Handle tap for weather module icon
+
               setState(() {
                 _selectedIndex = 1;
               });
