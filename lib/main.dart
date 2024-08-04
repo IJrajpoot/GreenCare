@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:greencare/manage_profile.dart';
-import 'package:greencare/weather_forecast.dart';
 import 'splash_screen.dart';
 import 'login_page.dart';
 import 'homepage.dart';

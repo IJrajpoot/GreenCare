@@ -31,9 +31,11 @@ class TopBar extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              // Handle avatar tapped
-              print('Avatar tapped');
-              // You can navigate to profile screen or perform any action here
+              // Navigate to the ManageProfileScreen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ManageProfileScreen()),
+              );
             },
             child: const CircleAvatar(
               backgroundImage: AssetImage('assets/icons/avatar.png'),
