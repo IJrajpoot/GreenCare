@@ -60,10 +60,11 @@ flutter:
     - assets/images/sunny.jpg
     - assets/images/camera.png
     - assets/images/weather.png
+    - assets/icons/home.png
     - assets/icons/help.png
     - assets/icons/history.png
-    - assets/icons/image_upload.png
-    - assets/icons/weather_module.png
+    - assets/icons/camera.png
+    - assets/icons/weather.png
     - assets/icons/avatar.png
     - assets/videos/Green Pakistan with GreenCare.mp4
     - assets/images/wheat.jpg

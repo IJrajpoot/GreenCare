@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'help.dart';
 import 'weather_forecast.dart';
-
+import 'package:greencare/topbar.dart'; // Import TopBar if needed
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -13,6 +13,47 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0; // Track the selected index
 
+  void _onNavBarItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+      // Handle home icon tap
+        print('Home icon tapped');
+        break;
+      case 1:
+      // Handle image upload icon tap
+        print('Image upload icon tapped');
+        break;
+      case 2:
+      // Navigate to WeatherForecastWidget
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Scaffold(
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(80.0),
+                child: TopBar(),
+              ),
+              body: const WeatherForecastWidget(),
+              bottomNavigationBar: const NavBar(),
+            ),
+          ),
+        );
+        break;
+      case 3:
+      // Handle history icon tap
+        print('History icon tapped');
+        break;
+      case 4:
+      // Handle help icon tap
+        print('Help icon tapped');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,49 +63,29 @@ class _NavBarState extends State<NavBar> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           NavBarItem(
-            iconPath: 'assets/icons/image_upload.png',
+            iconPath: 'assets/icons/home.png',
             isSelected: _selectedIndex == 0,
-            onTap: () {
-              // Handle tap for image upload icon
-              setState(() {
-                _selectedIndex = 0;
-              });
-              print('Image upload icon tapped');
-            },
+            onTap: () => _onNavBarItemTapped(0),
           ),
           NavBarItem(
-            iconPath: 'assets/icons/weather_module.png',
+            iconPath: 'assets/icons/camera.png',
             isSelected: _selectedIndex == 1,
-            onTap: () {
-              // Handle tap for weather module icon
-
-              setState(() {
-                _selectedIndex = 1;
-              });
-              print('Weather module icon tapped');
-            },
+            onTap: () => _onNavBarItemTapped(1),
+          ),
+          NavBarItem(
+            iconPath: 'assets/icons/weather.png',
+            isSelected: _selectedIndex == 2,
+            onTap: () => _onNavBarItemTapped(2),
           ),
           NavBarItem(
             iconPath: 'assets/icons/history.png',
-            isSelected: _selectedIndex == 2,
-            onTap: () {
-              // Handle tap for history icon
-              setState(() {
-                _selectedIndex = 2;
-              });
-              print('History icon tapped');
-            },
+            isSelected: _selectedIndex == 3,
+            onTap: () => _onNavBarItemTapped(3),
           ),
           NavBarItem(
             iconPath: 'assets/icons/help.png',
-            isSelected: _selectedIndex == 3,
-            onTap: () {
-              // Handle tap for help icon
-              setState(() {
-                _selectedIndex = 3;
-              });
-              print('Help icon tapped');
-            },
+            isSelected: _selectedIndex == 4,
+            onTap: () => _onNavBarItemTapped(4),
           ),
         ],
       ),
@@ -77,7 +98,8 @@ class NavBarItem extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const NavBarItem({super.key, 
+  const NavBarItem({
+    super.key,
     required this.iconPath,
     required this.isSelected,
     required this.onTap,
@@ -90,19 +112,20 @@ class NavBarItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
+          width: 60,
+          height: 60,
           decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                width: isSelected ? 3.0 : 0.0, // Highlight selected item
-                color: isSelected ? Colors.white : Colors.transparent,
-              ),
-            ),
+            color: isSelected ? Colors.white : Colors.transparent,
+            shape: BoxShape.circle,
           ),
-          child: Image.asset(
-            iconPath,
-            width: 40,
-            height: 40,
-            // You can adjust width and height as per your design
+          child: Center(
+            child: Image.asset(
+              iconPath,
+              width: 40,
+              height: 40,
+              color: isSelected ? Colors.green : Colors.white,
+              // Non-selected icons appear white, selected ones turn green
+            ),
           ),
         ),
       ),
