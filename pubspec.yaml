@@ -30,13 +30,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  video_player: ^2.2.10
-
+ 
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
+  weather: ^3.1.1
+  intl: ^0.19.0
+   
+  geolocator: ^13.0.1
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -60,15 +64,12 @@ flutter:
     - assets/images/sunny.jpg
     - assets/images/camera.png
     - assets/images/weather.png
-    - assets/icons/home.png
     - assets/icons/help.png
     - assets/icons/history.png
-    - assets/icons/camera.png
-    - assets/icons/weather.png
+    - assets/icons/image_upload.png
+    - assets/icons/weather_module.png
     - assets/icons/avatar.png
-    - assets/videos/Green Pakistan with GreenCare.mp4
-    - assets/images/wheat.jpg
-    - assets/images/
+    - assets/images/image.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

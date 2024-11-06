@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'detected_disease.dart';
 import 'topbar.dart';
 import 'navbar.dart';
-import 'menu.dart';
+import 'package:greencare/pages/weatherupdate.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +29,6 @@ class HomePage extends StatelessWidget {
         preferredSize: Size.fromHeight(80.0),
         child: TopBar(),
       ),
-      drawer: MenuDrawer(userName: 'User'),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -58,11 +58,11 @@ class WeatherCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 200,  // Increased the height of the image container
+            height: 200, // Increased the height of the image container
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                  'assets/images/sunny.jpg',  // Replace with your image asset path
+                  'assets/images/sunny.jpg', // Replace with your image asset path
                 ),
                 fit: BoxFit.cover,
               ),
@@ -101,7 +101,8 @@ class WeatherCard extends StatelessWidget {
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white.withOpacity(0.2),
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 8.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -120,7 +121,6 @@ class WeatherCard extends StatelessWidget {
   }
 }
 
-
 class GridMenu extends StatelessWidget {
   const GridMenu({super.key});
 
@@ -130,23 +130,78 @@ class GridMenu extends StatelessWidget {
       crossAxisCount: 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 0.7,  // Adjusted aspect ratio to increase height
+      childAspectRatio: 0.7, // Adjusted aspect ratio to increase height
       children: [
         GridItem(
           imagePath: 'assets/images/camera.png',
           label: 'Detect Green Disease',
           onTap: () {
-            // Handle Detect Green Disease button tap
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const DetectedDiseaseScreen()),
+            );
           },
         ),
         GridItem(
           imagePath: 'assets/images/weather.png',
           label: 'Weather Updates',
           onTap: () {
-            // Handle Weather Updates button tap
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const WeatherForecastPage()),
+            );
           },
         ),
       ],
+    );
+  }
+}
+
+class My extends StatelessWidget {
+  const My({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Black Chaff Detection'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Black Chaff',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Crop: Wheat',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Detection Accuracy: 95%',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Handle button press
+                },
+                child: const Text('Learn More'),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -156,7 +211,11 @@ class GridItem extends StatelessWidget {
   final String label;
   final Function onTap;
 
-  const GridItem({super.key, required this.imagePath, required this.label, required this.onTap});
+  const GridItem(
+      {super.key,
+      required this.imagePath,
+      required this.label,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +231,7 @@ class GridItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 180,  // Adjusted height of the image container
+              height: 180, // Adjusted height of the image container
               child: Image.asset(
                 imagePath,
                 fit: BoxFit.contain,
@@ -196,4 +255,3 @@ class GridItem extends StatelessWidget {
     );
   }
 }
-

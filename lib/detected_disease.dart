@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:greencare/constans/colors.dart';
+
 import 'package:greencare/navbar.dart';
 import 'package:greencare/topbar.dart';
 
@@ -14,8 +14,8 @@ class _DetectedDiseaseScreenState extends State<DetectedDiseaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80.0),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
         child: TopBar(),
       ),
       body: SingleChildScrollView(
@@ -26,9 +26,12 @@ class _DetectedDiseaseScreenState extends State<DetectedDiseaseScreen> {
                 height: 250,
                 width: MediaQuery.of(context).size.width,
                 child: Image.asset(
-                  'assets/images/wheat.jpg',
+                  'assets/images/image.png',
                   fit: BoxFit.cover,
-                  // width: double.infinity,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Handle missing or corrupted image (e.g., display a placeholder)
+                    return const Text('Error loading image');
+                  },
                 ),
               ),
               const SizedBox(
@@ -49,7 +52,7 @@ class _DetectedDiseaseScreenState extends State<DetectedDiseaseScreen> {
                       'Black Chaff',
                       style: TextStyle(
                         fontSize: 26,
-                        color: primaryGreen,
+                        color: Color(0xFF3C7A17),
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -72,7 +75,7 @@ class _DetectedDiseaseScreenState extends State<DetectedDiseaseScreen> {
                           child: const Text(
                             'Read More ..',
                             style: TextStyle(
-                                color: primaryGreen,
+                                color: Color(0xFF3C7A17),
                                 fontWeight: FontWeight.w500),
                           )),
                     )
@@ -90,7 +93,7 @@ class _DetectedDiseaseScreenState extends State<DetectedDiseaseScreen> {
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        backgroundColor: primaryGreen,
+                        backgroundColor: const Color(0xFF3C7A17),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -115,7 +118,7 @@ class _DetectedDiseaseScreenState extends State<DetectedDiseaseScreen> {
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        backgroundColor: primaryGreen,
+                        backgroundColor: const Color(0xFF3C7A17),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -136,7 +139,7 @@ class _DetectedDiseaseScreenState extends State<DetectedDiseaseScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: NavBar(),
+      bottomNavigationBar: const NavBar(),
     );
   }
 }
