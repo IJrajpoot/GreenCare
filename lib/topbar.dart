@@ -12,9 +12,11 @@ class TopBar extends StatefulWidget {
 }
 
 class _TopBarState extends State<TopBar> {
-  String _selectedLocation = 'Karachi'; // Default message
+  String _selectedLocation = 'Karachi'; // Default location
   String _currentLocation = ''; // Store the exact location
   bool _isLoading = false; // Track loading state
+  String iconPath = 'assets/icons/home.png'; // Path for the home icon
+  bool isSelected = false; // Control selection state
 
   // Get the current location and perform reverse geocoding to get the city or country name
   Future<void> _useCurrentLocation() async {
@@ -40,7 +42,7 @@ class _TopBarState extends State<TopBar> {
         }
       }
 
-      // Get current locationq
+      // Get current location
       Position currentPosition = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
 
@@ -51,16 +53,10 @@ class _TopBarState extends State<TopBar> {
 
       // Update the selected location with the city or country name
       setState(() {
-        // _selectedLocation =
-        //     place.locality ?? place.country ?? "Unknown Location";
-        // _currentLocation = _selectedLocation; // Store the location
-        // _isLoading = false; // Stop loading
-
         _selectedLocation =
             '${place.locality ?? 'Unknown city'}, ${place.country ?? 'Unknown country'}'; // Full address
         _currentLocation = _selectedLocation; // Store the location
         _isLoading = false; // Stop loading
-        var _locationFetched = true; // Mark location as fetched
       });
     } catch (e) {
       setState(() {
@@ -97,38 +93,42 @@ class _TopBarState extends State<TopBar> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-            icon: const Icon(Icons.menu, color: Colors.white),
-            onPressed: () {
+          // Home button
+          InkWell(
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage()),
               );
             },
+            child: CircleAvatar(
+              backgroundColor: const Color(0xFF3C7A17),
+              radius: 20,
+              child: Image.asset(
+                iconPath,
+                width: 40,
+                height: 40,
+                color: isSelected
+                    ? Colors.white
+                    : Colors.grey[400], // Color based on selection
+              ),
+            ),
           ),
+          // Location and refresh
           InkWell(
             onTap: () {
               _useCurrentLocation(); // Fetch location if not already fetched
             },
             child: Row(
               children: [
-                _isLoading
-                    ? const CircularProgressIndicator(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      ) // Show loading spinner while fetching
-                    : Text(
-                        _selectedLocation, // Show the location or default message
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                if (!_isLoading)
-                  const Icon(
-                    Icons.refresh, // Refresh icon to reload location
-                    color: Color.fromARGB(255, 32, 122, 39),
-                  ),
+                Text(
+                  _selectedLocation, // Show the location or default message
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                ),
               ],
             ),
           ),
+          // Profile button
           InkWell(
             onTap: () {
               Navigator.push(
@@ -139,7 +139,7 @@ class _TopBarState extends State<TopBar> {
             },
             child: const CircleAvatar(
               backgroundImage: AssetImage('assets/icons/avatar.png'),
-              backgroundColor: Color.fromARGB(255, 2, 2, 2),
+              backgroundColor: Colors.black, // Corrected background color
               radius: 20,
             ),
           ),

@@ -11,71 +11,61 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-  int _selectedIndex = 0; // Track the selected index
+  int? _selectedIndex; // Track the selected index, initially null
+
+  void _onItemTapped(int index, Widget destinationPage) {
+    setState(() {
+      _selectedIndex = index; // Update the selected index
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => destinationPage),
+    ).then((_) {
+      // Reset selected index when coming back to the main page
+      setState(() {
+        _selectedIndex = null;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-      color: const Color(0xFF3C7A17),
+      decoration: BoxDecoration(
+        color: const Color(0xFF3C7A17),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 5,
+          ),
+        ],
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           NavBarItem(
-            iconPath: 'assets/icons/image_upload.png',
+            iconPath: 'assets/icons/camera.png',
             isSelected: _selectedIndex == 0,
-            onTap: () {
-              // Handle tap for image upload icon
-              setState(() {
-                _selectedIndex = 0;
-              });
-              print('Image upload icon tapped');
-            },
+            onTap: () => _onItemTapped(
+                0, const Placeholder()), // Replace with your camera page
           ),
           NavBarItem(
             iconPath: 'assets/icons/weather_module.png',
             isSelected: _selectedIndex == 1,
-            onTap: () {
-              // Handle tap for weather module icon
-               Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const WeatherForecastPage()),
-            );
-              setState(() {
-                _selectedIndex = 1;
-              });
-              print('Weather module icon tapped');
-            },
+            onTap: () => _onItemTapped(1, const WeatherForecastPage()),
           ),
           NavBarItem(
             iconPath: 'assets/icons/history.png',
             isSelected: _selectedIndex == 2,
-            onTap: () {
-              // Handle tap for history icon
-               Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const History()),
-            );
-              setState(() {
-                _selectedIndex = 2;
-              });
-              print('History icon tapped');
-            },
+            onTap: () => _onItemTapped(2, const History()),
           ),
           NavBarItem(
             iconPath: 'assets/icons/help.png',
             isSelected: _selectedIndex == 3,
-            onTap: () {
-              // Handle tap for help icon
-                Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const helppage()),
-            );
-              setState(() {
-                _selectedIndex = 3;
-              });
-              print('Help icon tapped');
-            },
+            onTap: () => _onItemTapped(3, const helppage()),
           ),
         ],
       ),
@@ -88,7 +78,8 @@ class NavBarItem extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const NavBarItem({super.key, 
+  const NavBarItem({
+    super.key,
     required this.iconPath,
     required this.isSelected,
     required this.onTap,
@@ -108,12 +99,23 @@ class NavBarItem extends StatelessWidget {
                 color: isSelected ? Colors.white : Colors.transparent,
               ),
             ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.6), // Glow effect
+                      spreadRadius: 5,
+                      blurRadius: 15,
+                    )
+                  ]
+                : [], // No glow if not selected
           ),
           child: Image.asset(
             iconPath,
             width: 40,
             height: 40,
-            // You can adjust width and height as per your design
+            color: isSelected
+                ? Colors.white
+                : Colors.grey[400], // Color based on selection
           ),
         ),
       ),
