@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:greencare/homepage.dart';
-import 'package:greencare/manage_profile.dart';
+import 'package:greencare/profile.dart';
+
 import 'package:greencare/topbar.dart';
 
-class ViewProfileScreen extends StatelessWidget {
-  const ViewProfileScreen({super.key});
+class ManageProfileScreen extends StatelessWidget {
+  const ManageProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +23,22 @@ class ViewProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Center(
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage(
-                      'assets/icons/avatar.png'), // Replace with your image asset
+                child: Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage(
+                          'assets/images/farmer_browse.jpg'), // Replace with your image asset
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(Icons.camera_alt, color: Color(0xFF3C7A17)),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),
@@ -35,9 +47,16 @@ class ViewProfileScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'John Doe',
-                style: TextStyle(fontSize: 16),
+              TextField(
+                decoration: InputDecoration(
+                  filled: true,
+                  hintText: 'Name',
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               const Text(
@@ -45,9 +64,17 @@ class ViewProfileScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text(
-                '+92356788999',
-                style: TextStyle(fontSize: 16),
+              TextField(
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  hintText: '+92356788999',
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               const Text(
@@ -55,21 +82,23 @@ class ViewProfileScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Sialkot',
-                style: TextStyle(fontSize: 16),
+              TextField(
+                decoration: InputDecoration(
+                  filled: true,
+                  hintText: 'Sialkot',
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
               ),
               const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle edit profile button press
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ManageProfileScreen()),
-                    );
+                    // Handle save changes button press
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF3C7A17), // Button color
@@ -80,7 +109,7 @@ class ViewProfileScreen extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'Edit Profile',
+                    'Save Changes',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -89,9 +118,12 @@ class ViewProfileScreen extends StatelessWidget {
               Center(
                 child: TextButton.icon(
                   onPressed: () {
+                    // Handle back button press
+
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
+                      MaterialPageRoute(
+                          builder: (context) => const ViewProfileScreen()),
                     );
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.black),

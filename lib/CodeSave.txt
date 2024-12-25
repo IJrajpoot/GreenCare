@@ -1,0 +1,33 @@
+class GridMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      childAspectRatio: 0.7, // Adjusted aspect ratio to increase height
+      children: [
+        GridItem(
+          imagePath: 'assets/images/camera.png',
+          label: 'Detect Green Disease',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DetectedDiseaseScreen()),
+            );
+          },
+        ),
+        GridItem(
+          imagePath: 'assets/images/weather.png',
+          label: 'Weather Updates',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => WeatherForecastPage()),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}

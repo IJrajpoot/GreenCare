@@ -1,73 +1,147 @@
 import 'package:flutter/material.dart';
-import 'profile.dart';
-import 'menu.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:greencare/homepage.dart';
+import 'package:greencare/profile.dart';
 
-class TopBar extends StatelessWidget {
+class TopBar extends StatefulWidget {
   const TopBar({super.key});
+
+  @override
+  _TopBarState createState() => _TopBarState();
+}
+
+class _TopBarState extends State<TopBar> {
+  String _selectedLocation = 'Karachi'; // Default location
+  String _currentLocation = ''; // Store the exact location
+  bool _isLoading = false; // Track loading state
+  String iconPath = 'assets/icons/home.png'; // Path for the home icon
+  bool isSelected = false; // Control selection state
+
+  // Get the current location and perform reverse geocoding to get the city or country name
+  Future<void> _useCurrentLocation() async {
+    if (_currentLocation.isNotEmpty) {
+      // If location is already fetched, just show it
+      return;
+    }
+
+    setState(() {
+      _isLoading = true; // Show loading icon
+    });
+
+    try {
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied ||
+            permission == LocationPermission.deniedForever) {
+          _showPermissionDeniedDialog();
+          return;
+        }
+      }
+
+      // Get current location
+      Position currentPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+
+      // Reverse geocode to get the address
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          currentPosition.latitude, currentPosition.longitude);
+      Placemark place = placemarks[0];
+
+      // Update the selected location with the city or country name
+      setState(() {
+        _selectedLocation =
+            '${place.locality ?? 'Unknown city'}, ${place.country ?? 'Unknown country'}'; // Full address
+        _currentLocation = _selectedLocation; // Store the location
+        _isLoading = false; // Stop loading
+      });
+    } catch (e) {
+      setState(() {
+        _selectedLocation = "Error getting location";
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _showPermissionDeniedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("Permission Denied"),
+        content: const Text(
+            "Location permission is required to access your location."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 5.0),
+      padding: const EdgeInsets.all(16.0),
       color: const Color(0xFF3C7A17),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-            icon: const Icon(Icons.menu, color: Colors.white),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
+          // Home button
           InkWell(
             onTap: () {
-              // Handle location text tapped
-              print('Location tapped');
-              // You can navigate to another screen or perform any action here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
             },
-            child: const Text(
-              'Sialkot, Pakistan',
-              style: TextStyle(color: Colors.white, fontSize: 18),
+            child: CircleAvatar(
+              backgroundColor: const Color(0xFF3C7A17),
+              radius: 20,
+              child: Image.asset(
+                iconPath,
+                width: 40,
+                height: 40,
+                color: isSelected
+                    ? Colors.white
+                    : Colors.grey[400], // Color based on selection
+              ),
             ),
           ),
-          PopupMenuButton<String>(
-            icon: const CircleAvatar(
+          // Location and refresh
+          InkWell(
+            onTap: () {
+              _useCurrentLocation(); // Fetch location if not already fetched
+            },
+            child: Row(
+              children: [
+                Text(
+                  _selectedLocation, // Show the location or default message
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ],
+            ),
+          ),
+          // Profile button
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ViewProfileScreen()),
+              );
+            },
+            child: const CircleAvatar(
               backgroundImage: AssetImage('assets/icons/avatar.png'),
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.black, // Corrected background color
               radius: 20,
             ),
-            onSelected: (String value) {
-              if (value == 'Edit Profile') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ManageProfileScreen()),
-                );
-              } else if (value == 'Logout') {
-                // Handle logout functionality
-                print('User logged out');
-                // Add your logout logic here
-              }
-            },
-            itemBuilder: (BuildContext context) => [
-              PopupMenuItem<String>(
-                value: 'Edit Profile',
-                child: ListTile(
-                  leading: const Icon(Icons.edit, color: Colors.black),
-                  title: const Text('Edit Profile'),
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'Logout',
-                child: ListTile(
-                  leading: const Icon(Icons.logout, color: Colors.red),
-                  title: const Text(
-                    'Logout',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              ),
-            ],
           ),
         ],
       ),
