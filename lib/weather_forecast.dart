@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'navbar.dart'; // Import the NavBar widget
-import 'package:greencare/topbar.dart';
+import 'package:GreenCare/topbar.dart';
 
 class WeatherForecastPage extends StatelessWidget {
   const WeatherForecastPage({super.key});

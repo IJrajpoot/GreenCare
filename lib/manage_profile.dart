@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:greencare/profile.dart';
+import 'package:GreenCare/profile.dart';
 
-import 'package:greencare/topbar.dart';
+import 'package:GreenCare/topbar.dart';
 
 class ManageProfileScreen extends StatelessWidget {
   const ManageProfileScreen({super.key});

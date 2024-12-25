@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:greencare/homepage.dart';
-import 'package:greencare/profile.dart';
+import 'package:GreenCare/homepage.dart';
+import 'package:GreenCare/profile.dart';
 
 class TopBar extends StatefulWidget {
   const TopBar({super.key});

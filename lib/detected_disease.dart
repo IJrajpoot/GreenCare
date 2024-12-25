@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:greencare/navbar.dart';
-import 'package:greencare/topbar.dart';
+import 'package:GreenCare/navbar.dart';
+import 'package:GreenCare/topbar.dart';
 
 class DetectedDiseaseScreen extends StatefulWidget {
   const DetectedDiseaseScreen({super.key});

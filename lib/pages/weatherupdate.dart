@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:greencare/const.dart';
-import 'package:greencare/navbar.dart';
+import 'package:GreenCare/const.dart';
+import 'package:GreenCare/navbar.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
-import 'package:greencare/topbar.dart';
+import 'package:GreenCare/topbar.dart';
 
 class WeatherForecastPage extends StatefulWidget {
   const WeatherForecastPage({super.key});

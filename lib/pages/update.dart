@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:greencare/const.dart';
+import 'package:GreenCare/const.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
 

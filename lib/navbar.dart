@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:greencare/help.dart';
-import 'package:greencare/history.dart';
-import 'package:greencare/pages/weatherupdate.dart';
+import 'package:GreenCare/help.dart';
+import 'package:GreenCare/history.dart';
+import 'package:GreenCare/pages/weatherupdate.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});

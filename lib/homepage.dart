@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'detected_disease.dart';
 import 'topbar.dart';
 import 'navbar.dart';
-import 'package:greencare/pages/weatherupdate.dart';
+import 'package:GreenCare/pages/weatherupdate.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
