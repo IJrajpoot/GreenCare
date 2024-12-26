@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:GreenCare/const.dart';
 import 'package:GreenCare/navbar.dart';
+import 'package:GreenCare/topbar.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
-import 'package:GreenCare/topbar.dart';
 
 class WeatherForecastPage extends StatefulWidget {
   const WeatherForecastPage({super.key});
@@ -210,9 +210,9 @@ class SevenDayForecastPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("<<--UPCOMMING WEEK FORECASTE-->>"),
-        backgroundColor: const Color.fromARGB(255, 159, 252, 105),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: TopBar(),
       ),
       body: forecast == null
           ? const Center(child: CircularProgressIndicator())
@@ -227,6 +227,7 @@ class SevenDayForecastPage extends StatelessWidget {
                 );
               },
             ),
+      bottomNavigationBar: const NavBar(),
     );
   }
 
@@ -240,7 +241,7 @@ class SevenDayForecastPage extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFF3C7A17), Color(0xFF92D36E)],
+            colors: [Color(0xFF3C7A17), Color(0xFF3C7A17)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

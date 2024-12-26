@@ -1,34 +1,36 @@
 import 'dart:convert';
+
+import 'package:GreenCare/pages/weatherupdate.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import 'detected_disease.dart';
-import 'topbar.dart';
 import 'navbar.dart';
-import 'package:GreenCare/pages/weatherupdate.dart';
+import 'topbar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    return Scaffold(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(80.0),
         child: TopBar(),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20.0),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             WeatherCard(
-              city: 'Karachi', // Change this to a dynamic location if needed
+              city: 'Lahore', // Change this to a dynamic location if needed
             ),
-            SizedBox(height: 20.0),
-            GridMenu(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+            const GridMenu(),
           ],
         ),
       ),
-      bottomNavigationBar: NavBar(),
+      bottomNavigationBar: const NavBar(),
     );
   }
 }
@@ -99,7 +101,7 @@ class _WeatherCardState extends State<WeatherCard> {
             child: Column(
               children: [
                 Container(
-                  height: 200,
+                  height: MediaQuery.of(context).size.height * 0.25,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('assets/images/sunny.jpg'),
@@ -172,37 +174,54 @@ class GridMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
+    final screenWidth = MediaQuery.of(context).size.width;
+    final crossAxisCount = screenWidth > 600 ? 3 : 2;
+
+    final items = [
+      {
+        'imagePath': 'assets/images/camera.png',
+        'label': 'Detect Green Disease',
+        'onTap': () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DetectedDiseaseScreen(),
+            ),
+          );
+        },
+      },
+      {
+        'imagePath': 'assets/images/wheather_check.jpeg',
+        'label': 'Weather Updates',
+        'onTap': () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const WeatherForecastPage(),
+            ),
+          );
+        },
+      },
+    ];
+
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        crossAxisSpacing: 10.0,
+        mainAxisSpacing: 10.0,
+        childAspectRatio: screenWidth > 600 ? 1.0 : 0.8,
+      ),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 0.7,
-      children: [
-        GridItem(
-          imagePath: 'assets/images/camera.png',
-          label: 'Detect Green Disease',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const DetectedDiseaseScreen(),
-              ),
-            );
-          },
-        ),
-        GridItem(
-          imagePath: 'assets/images/wheather_check.jpeg',
-          label: 'Weather Updates',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const WeatherForecastPage(),
-              ),
-            );
-          },
-        ),
-      ],
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
+        return GridItem(
+          imagePath: item['imagePath'] as String,
+          label: item['label'] as String,
+          onTap: item['onTap'] as void Function(),
+        );
+      },
     );
   }
 }
@@ -210,7 +229,7 @@ class GridMenu extends StatelessWidget {
 class GridItem extends StatelessWidget {
   final String imagePath;
   final String label;
-  final Function onTap;
+  final VoidCallback onTap;
 
   const GridItem({
     super.key,
@@ -222,7 +241,7 @@ class GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(),
+      onTap: onTap,
       child: Card(
         margin: const EdgeInsets.all(10.0),
         color: const Color(0xFF3C7A17),
@@ -233,7 +252,7 @@ class GridItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 180,
+              height: MediaQuery.of(context).size.height * 0.18,
               child: Image.asset(
                 imagePath,
                 fit: BoxFit.contain,
@@ -246,7 +265,7 @@ class GridItem extends StatelessWidget {
                 label,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 20,
                 ),
                 textAlign: TextAlign.center,
               ),

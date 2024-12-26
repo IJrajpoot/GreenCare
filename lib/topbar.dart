@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:GreenCare/homepage.dart';
 import 'package:GreenCare/profile.dart';
+import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class TopBar extends StatefulWidget {
+  static var location_fetched_saved;
+
   const TopBar({super.key});
 
   @override
@@ -12,25 +14,25 @@ class TopBar extends StatefulWidget {
 }
 
 class _TopBarState extends State<TopBar> {
-  String _selectedLocation = 'Karachi'; // Default location
+  String _selectedLocation = ''; // Initially empty, no manual set
   String _currentLocation = ''; // Store the exact location
   bool _isLoading = false; // Track loading state
   String iconPath = 'assets/icons/home.png'; // Path for the home icon
   bool isSelected = false; // Control selection state
 
-  // Get the current location and perform reverse geocoding to get the city or country name
+  // Variable to store the fetched location for global access
+  static String location_fetched_saved = '';
+
   Future<void> _useCurrentLocation() async {
     if (_currentLocation.isNotEmpty) {
-      // If location is already fetched, just show it
       return;
     }
 
     setState(() {
-      _isLoading = true; // Show loading icon
+      _isLoading = true;
     });
 
     try {
-
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
@@ -42,21 +44,20 @@ class _TopBarState extends State<TopBar> {
         }
       }
 
-      // Get current location
       Position currentPosition = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
 
-      // Reverse geocode to get the address
       List<Placemark> placemarks = await placemarkFromCoordinates(
           currentPosition.latitude, currentPosition.longitude);
       Placemark place = placemarks[0];
 
-      // Update the selected location with the city or country name
       setState(() {
         _selectedLocation =
-            '${place.locality ?? 'Unknown city'}, ${place.country ?? 'Unknown country'}'; // Full address
-        _currentLocation = _selectedLocation; // Store the location
-        _isLoading = false; // Stop loading
+            '${place.locality ?? 'Unknown city'}, ${place.country ?? 'Unknown country'}';
+        _currentLocation = _selectedLocation;
+        location_fetched_saved =
+            _selectedLocation; // Store the fetched location
+        _isLoading = false;
       });
     } catch (e) {
       setState(() {
@@ -86,7 +87,15 @@ class _TopBarState extends State<TopBar> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _useCurrentLocation(); // Automatically fetch the location when the top bar loads
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       color: const Color(0xFF3C7A17),
@@ -103,27 +112,29 @@ class _TopBarState extends State<TopBar> {
             },
             child: CircleAvatar(
               backgroundColor: const Color(0xFF3C7A17),
-              radius: 20,
+              radius: screenWidth > 600 ? 30 : 20, // Adjust radius
               child: Image.asset(
                 iconPath,
-                width: 40,
-                height: 40,
-                color: isSelected
-                    ? Colors.white
-                    : Colors.grey[400], // Color based on selection
+                width: screenWidth > 600 ? 50 : 40,
+                // Adjust size for larger screens
+                height: screenWidth > 600 ? 50 : 40,
+                color: isSelected ? Colors.white : Colors.white,
               ),
             ),
           ),
           // Location and refresh
           InkWell(
             onTap: () {
-              _useCurrentLocation(); // Fetch location if not already fetched
+              _useCurrentLocation(); // Fetch current location when tapped
             },
             child: Row(
               children: [
                 Text(
-                  _selectedLocation, // Show the location or default message
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                  _selectedLocation,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenWidth > 600 ? 22 : 18, // Adjust font size
+                  ),
                 ),
               ],
             ),
@@ -137,10 +148,10 @@ class _TopBarState extends State<TopBar> {
                     builder: (context) => const ViewProfileScreen()),
               );
             },
-            child: const CircleAvatar(
-              backgroundImage: AssetImage('assets/icons/avatar.png'),
-              backgroundColor: Colors.black, // Corrected background color
-              radius: 20,
+            child: CircleAvatar(
+              backgroundImage: const AssetImage('assets/icons/avatar.png'),
+              backgroundColor: Colors.black,
+              radius: screenWidth > 600 ? 30 : 20, // Adjust radius
             ),
           ),
         ],

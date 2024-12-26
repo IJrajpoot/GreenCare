@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:GreenCare/help.dart';
 import 'package:GreenCare/history.dart';
 import 'package:GreenCare/pages/weatherupdate.dart';
+import 'package:flutter/material.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -31,8 +31,11 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 80,
+      height: screenWidth > 600 ? 100 : 80,
+      // Adjust height based on screen size
       decoration: BoxDecoration(
         color: const Color(0xFF3C7A17),
         boxShadow: [
@@ -51,21 +54,25 @@ class _NavBarState extends State<NavBar> {
             isSelected: _selectedIndex == 0,
             onTap: () => _onItemTapped(
                 0, const Placeholder()), // Replace with your camera page
+            size: screenWidth > 600 ? 50 : 40, // Adjust size for larger screens
           ),
           NavBarItem(
             iconPath: 'assets/icons/weather_module.png',
             isSelected: _selectedIndex == 1,
             onTap: () => _onItemTapped(1, const WeatherForecastPage()),
+            size: screenWidth > 600 ? 50 : 40,
           ),
           NavBarItem(
             iconPath: 'assets/icons/history.png',
             isSelected: _selectedIndex == 2,
             onTap: () => _onItemTapped(2, const History()),
+            size: screenWidth > 600 ? 50 : 40,
           ),
           NavBarItem(
             iconPath: 'assets/icons/help.png',
             isSelected: _selectedIndex == 3,
             onTap: () => _onItemTapped(3, const helppage()),
+            size: screenWidth > 600 ? 50 : 40,
           ),
         ],
       ),
@@ -77,12 +84,14 @@ class NavBarItem extends StatelessWidget {
   final String iconPath;
   final bool isSelected;
   final VoidCallback onTap;
+  final double size; // Added size property for responsiveness
 
   const NavBarItem({
     super.key,
     required this.iconPath,
     required this.isSelected,
     required this.onTap,
+    required this.size,
   });
 
   @override
@@ -111,11 +120,11 @@ class NavBarItem extends StatelessWidget {
           ),
           child: Image.asset(
             iconPath,
-            width: 40,
-            height: 40,
+            width: size,
+            height: size,
             color: isSelected
                 ? Colors.white
-                : Colors.grey[400], // Color based on selection
+                : Colors.white, // Color based on selection
           ),
         ),
       ),

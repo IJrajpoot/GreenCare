@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:GreenCare/const.dart';
-import 'package:GreenCare/navbar.dart';
 import 'package:GreenCare/topbar.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather/weather.dart';
+
+import '../navbar.dart';
 
 class WeatherForecastPage extends StatefulWidget {
   const WeatherForecastPage({super.key});
@@ -16,7 +17,8 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
   final WeatherFactory _wf = WeatherFactory(OPENWEATHER_API_KEY);
   Weather? _weather;
   List<Weather>? _forecast;
-  String _cityName = "Karachi"; // Default city name
+  String _cityName =
+      TopBar.location_fetched_saved ?? "Karachi"; // Default city from TopBar
   final TextEditingController _cityController = TextEditingController();
 
   @override
@@ -26,6 +28,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
     _fetchForecast();
   }
 
+  // Fetch current weather for the given city
   void _fetchWeather() {
     _wf.currentWeatherByCityName(_cityName).then((w) {
       setState(() {
@@ -34,6 +37,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
     });
   }
 
+  // Fetch weather forecast for the given city
   void _fetchForecast() {
     _wf.fiveDayForecastByCityName(_cityName).then((f) {
       setState(() {
@@ -65,6 +69,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
     );
   }
 
+  // Section for weather image at the top
   Widget _weatherImageSection() {
     return Container(
       height: 250,
@@ -80,6 +85,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
     );
   }
 
+  // Input section for city search
   Widget _cityInputSection() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -108,6 +114,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
     );
   }
 
+  // Display weather info section
   Widget _weatherInfoSection() {
     if (_weather == null) {
       return const Center(child: CircularProgressIndicator());
@@ -194,6 +201,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
     );
   }
 
+  // Display 7-day weather forecast
   Widget _sevenDayForecastSection() {
     if (_forecast == null) {
       return const Center(child: CircularProgressIndicator());
