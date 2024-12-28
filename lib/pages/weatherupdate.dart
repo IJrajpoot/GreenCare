@@ -16,7 +16,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
   final WeatherFactory _wf = WeatherFactory(OPENWEATHER_API_KEY);
   Weather? _weather;
   List<Weather>? _forecast; // List to hold 7-day forecast
-  final String _cityName = "Karachi"; // Default city name
+  final String _cityName = "Lahore"; // Default city name
   final TextEditingController _cityController = TextEditingController();
 
   @override

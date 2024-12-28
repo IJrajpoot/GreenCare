@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'detected_disease.dart';
+import 'camera.dart';
 import 'topbar.dart';
 import 'navbar.dart';
 import 'package:GreenCare/pages/weatherupdate.dart';
@@ -54,7 +54,7 @@ class _WeatherCardState extends State<WeatherCard> {
   }
 
   Future<void> fetchWeatherData(String city) async {
-    const apiKey = 'your_api_key_here'; // Replace with your actual API key
+    const apiKey = '116ad2c91014c645f85ed93b34de22c9'; // Replace with your actual API key
     final url =
         'https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric';
 
@@ -185,7 +185,7 @@ class GridMenu extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const DetectedDiseaseScreen(),
+                builder: (context) => CameraScreen(),
               ),
             );
           },
