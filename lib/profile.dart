@@ -1,18 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:GreenCare/homepage.dart';
 import 'package:GreenCare/manage_profile.dart';
 import 'package:GreenCare/topbar.dart';
+import 'package:flutter/material.dart';
 
 class ViewProfileScreen extends StatelessWidget {
   const ViewProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        flexibleSpace: const PreferredSize(
-          preferredSize: Size.fromHeight(80.0),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0 + statusBarHeight),
+        // Adjust height based on the status bar
+        child: SafeArea(
+          // Wrap the TopBar in SafeArea to avoid overlap with notch or status bar
           child: TopBar(),
         ),
       ),

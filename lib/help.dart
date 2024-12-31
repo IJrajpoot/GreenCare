@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
-import 'topbar.dart';
+
 import 'navbar.dart'; // Import the NavBar widget
+import 'topbar.dart';
 
 class helppage extends StatelessWidget {
   const helppage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final screenHeight = MediaQuery.of(context).size.height;
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: TopBar(),
+        preferredSize: Size.fromHeight(80.0 + statusBarHeight),
+        // Adjust height based on the status bar
+        child: SafeArea(
+          // Wrap the TopBar in SafeArea to avoid overlap with notch or status bar
+          child: TopBar(),
+        ),
       ),
       bottomNavigationBar: NavBar(), // Include the NavBar
       body: Padding(

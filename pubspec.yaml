@@ -38,6 +38,30 @@ flutter:
     - assets/images/image.png
     - assets/images/camera.png
     - assets/images/wheather_check.jpeg
+    - assets/images/logo.png
+    - assets/images/login.jpg
+    - assets/icons/camera.png
+    - assets/icons/help.png
+    - assets/icons/history.png
+    - assets/icons/home.png
+    - assets/icons/weather_module.png
+    - assets/icons/avatar.png
+    - assets/images/image.png
+    - assets/images/camera.png
+    - assets/images/wheather_check.jpeg
+    - assets/images/sunny.jpg
+    - assets/images/cloudy.jpg
+    - assets/images/rainy.jpg
+    - assets/images/snowy.jpg
+    - assets/images/thunder.jpg
+    - assets/images/drizzle.jpg
+    - assets/images/foggy.jpg
+    - assets/images/cleanweather.jpg
+    - assets/images/mist.jpg
+    - assets/images/haze.jpg
+
+
+
 
 
   uses-material-design: true

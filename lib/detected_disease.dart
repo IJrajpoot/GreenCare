@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-
 import 'package:GreenCare/navbar.dart';
 import 'package:GreenCare/topbar.dart';
+import 'package:flutter/material.dart';
 
 class DetectedDiseaseScreen extends StatefulWidget {
   const DetectedDiseaseScreen({super.key});
@@ -13,10 +12,16 @@ class DetectedDiseaseScreen extends StatefulWidget {
 class _DetectedDiseaseScreenState extends State<DetectedDiseaseScreen> {
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: TopBar(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0 + statusBarHeight),
+        // Adjust height based on the status bar
+        child: SafeArea(
+          // Wrap the TopBar in SafeArea to avoid overlap with notch or status bar
+          child: TopBar(),
+        ),
       ),
       body: SingleChildScrollView(
         child: SafeArea(

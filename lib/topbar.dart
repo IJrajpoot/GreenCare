@@ -11,6 +11,10 @@ class TopBar extends StatefulWidget {
 
   @override
   _TopBarState createState() => _TopBarState();
+
+  String getLocation() {
+    return _TopBarState.location_fetched_saved;
+  }
 }
 
 class _TopBarState extends State<TopBar> {
@@ -57,6 +61,10 @@ class _TopBarState extends State<TopBar> {
         _currentLocation = _selectedLocation;
         location_fetched_saved =
             _selectedLocation; // Store the fetched location
+        String getLocation() {
+          return location_fetched_saved;
+        }
+
         _isLoading = false;
       });
     } catch (e) {

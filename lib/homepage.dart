@@ -8,28 +8,66 @@ import 'detected_disease.dart';
 import 'navbar.dart';
 import 'topbar.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String cityName = '';
+  bool isLoadingLocation = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocation();
+  }
+
+  // Function to load location dynamically after TopBar
+  void _loadLocation() async {
+    final location = await TopBar().getLocation(); // Fetch location
+    setState(() {
+      cityName = location;
+      isLoadingLocation = false; // Location fetched, now load weather
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+
+    // Wait for the location to be fetched before loading the page
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: TopBar(),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            WeatherCard(
-              city: 'Lahore', // Change this to a dynamic location if needed
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            const GridMenu(),
-          ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0 + statusBarHeight),
+        child: SafeArea(
+          child: TopBar(),
         ),
       ),
+      body: isLoadingLocation
+          ? const Center(
+              child:
+                  CircularProgressIndicator()) // Show loading while fetching location
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                final availableHeight =
+                    constraints.maxHeight - 80.0 - statusBarHeight;
+
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: availableHeight * 0.02),
+                      WeatherCard(city: cityName),
+                      SizedBox(height: availableHeight * 0.02),
+                      const GridMenu(),
+                    ],
+                  ),
+                );
+              },
+            ),
       bottomNavigationBar: const NavBar(),
     );
   }
@@ -47,6 +85,10 @@ class WeatherCard extends StatefulWidget {
 class _WeatherCardState extends State<WeatherCard> {
   String temperature = '';
   String weatherDescription = '';
+  String weatherIcon = 'assets/images/sunny.jpg';
+  String windSpeed = '';
+  String humidity = '';
+  String farmingCondition = 'Calculating...';
   bool isLoading = true;
 
   @override
@@ -56,7 +98,7 @@ class _WeatherCardState extends State<WeatherCard> {
   }
 
   Future<void> fetchWeatherData(String city) async {
-    const apiKey = 'your_api_key_here'; // Replace with your actual API key
+    const apiKey = '116ad2c91014c645f85ed93b34de22c9';
     final url =
         'https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric';
 
@@ -64,9 +106,18 @@ class _WeatherCardState extends State<WeatherCard> {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+
         setState(() {
           temperature = '${data['main']['temp']}°C';
           weatherDescription = data['weather'][0]['description'];
+          windSpeed = '${data['wind']['speed']} m/s';
+          humidity = '${data['main']['humidity']}%';
+          weatherIcon = getWeatherIcon(data['weather'][0]['main']);
+          farmingCondition = determineFarmingCondition(
+            temp: data['main']['temp'],
+            humidity: data['main']['humidity'],
+            description: data['weather'][0]['description'],
+          );
           isLoading = false;
         });
       } else {
@@ -88,6 +139,49 @@ class _WeatherCardState extends State<WeatherCard> {
     }
   }
 
+  String determineFarmingCondition({
+    required double temp,
+    required int humidity,
+    required String description,
+  }) {
+    if (temp > 25 &&
+        temp < 35 &&
+        humidity > 50 &&
+        description.contains('clear')) {
+      return 'Ideal for planting';
+    } else if (description.contains('rain')) {
+      return 'Rain expected, plan accordingly';
+    } else if (temp < 10) {
+      return 'Too cold for farming activities';
+    }
+    return 'Ideal For Planting And Pleasant Atmosphere';
+  }
+
+  String getWeatherIcon(String condition) {
+    switch (condition.toLowerCase()) {
+      case 'clear sky':
+        return 'assets/images/sunny.jpg';
+      case 'cloudy':
+        return 'assets/images/cloudy.jpg';
+      case 'rain':
+        return 'assets/images/rainy.jpg';
+      case 'snow':
+        return 'assets/images/snowy.jpg';
+      case 'thunderstorm':
+        return 'assets/images/thunder.jpg';
+      case 'drizzle':
+        return 'assets/images/drizzle.jpg';
+      case 'mist':
+        return 'assets/images/mist.jpg';
+      case 'haze':
+        return 'assets/images/haze.jpg';
+      case 'foggy':
+        return 'assets/images/foggy.jpg';
+      default:
+        return 'assets/images/cleanweather.jpg';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return isLoading
@@ -102,63 +196,116 @@ class _WeatherCardState extends State<WeatherCard> {
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height * 0.25,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/sunny.jpg'),
+                      image: AssetImage(weatherIcon),
                       fit: BoxFit.cover,
                     ),
-                    borderRadius: BorderRadius.vertical(
+                    borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(10.0),
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            temperature,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                temperature,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                weatherDescription,
+                                style: const TextStyle(
+                                    color: Colors.lightGreenAccent,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
-                          Text(
-                            weatherDescription,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'WIND : "$windSpeed "',
+                                style: const TextStyle(
+                                    color: Colors.lightGreenAccent,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'HUMIDITY : "$humidity "',
+                                style: const TextStyle(
+                                    color: Colors.lightGreenAccent,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const WeatherForecastPage(),
+                      const SizedBox(height: 8.0),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'FARMING CONDITION : "$farmingCondition "',
+                          style: const TextStyle(
+                              color: Colors.lightGreenAccent,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const WeatherForecastPage(),
+                                ),
+                              );
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                                vertical: 8.0,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
                             ),
-                          );
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.2),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0,
-                            vertical: 8.0,
+                            child: const Text('Forecast ->'),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              fetchWeatherData(widget.city);
+                            },
+                            child: const Text("Reload Weather"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                                vertical: 8.0,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          'Forecast ->',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -246,7 +393,7 @@ class GridItem extends StatelessWidget {
         margin: const EdgeInsets.all(10.0),
         color: const Color(0xFF3C7A17),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
