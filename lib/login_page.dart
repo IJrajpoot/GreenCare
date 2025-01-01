@@ -1,8 +1,26 @@
+import 'package:GreenCare/singup.dart';
 import 'package:flutter/material.dart';
-import 'singup.dart';
+
+import 'homepage.dart'; // Import your homepage here
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
+
+  Future<void> _loadTopBar(BuildContext context) async {
+    // Simulate loading the TopBar or any required initialization
+    await Future.delayed(const Duration(seconds: 1)); // Simulate a delay
+  }
+
+  Future<void> _onLoginTap(BuildContext context) async {
+    // Preload TopBar logic
+    await _loadTopBar(context);
+
+    // Navigate to HomePage directly
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +30,7 @@ class LoginPage extends StatelessWidget {
           children: <Widget>[
             // Top image
             Image.asset(
-              'assets/images/login.jpg', // Replace with your top image asset path
+              'assets/images/login.jpg',
               fit: BoxFit.cover,
               width: double.infinity,
               height: 500,
@@ -60,14 +78,10 @@ class LoginPage extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        // Handle login logic here
-                        Navigator.pushNamed(context, '/home');
-                      },
+                      onPressed: () => _onLoginTap(context),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        backgroundColor:
-                            const Color(0xFF3C7A17), // Change to your desired color
+                        backgroundColor: const Color(0xFF3C7A17),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -87,7 +101,9 @@ class LoginPage extends StatelessWidget {
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const SignUpPage()),
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpPage(),
+                        ),
                       );
                     },
                     child: const Text(

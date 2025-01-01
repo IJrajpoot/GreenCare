@@ -27,10 +27,16 @@ class _HomePageState extends State<HomePage> {
 
   // Function to load location dynamically after TopBar
   void _loadLocation() async {
-    final location = await TopBar().getLocation(); // Fetch location
+    final location = await LocationHelper
+        .getCurrentLocation(); // Fetch location using LocationHelper
     setState(() {
-      cityName = location;
-      isLoadingLocation = false; // Location fetched, now load weather
+      if (cityName.isEmpty) {
+        cityName = location;
+      } else {
+        cityName = "New York"; // Default if location is not fetched
+      }
+      isLoadingLocation = false;
+      // Location fetched, now load weather
     });
   }
 
@@ -88,6 +94,7 @@ class _WeatherCardState extends State<WeatherCard> {
   String weatherIcon = 'assets/images/sunny.jpg';
   String windSpeed = '';
   String humidity = '';
+
   String farmingCondition = 'Calculating...';
   bool isLoading = true;
 
@@ -292,6 +299,11 @@ class _WeatherCardState extends State<WeatherCard> {
                           ElevatedButton(
                             onPressed: () {
                               fetchWeatherData(widget.city);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomePage()),
+                              );
                             },
                             child: const Text("Reload Weather"),
                             style: ElevatedButton.styleFrom(
@@ -421,5 +433,13 @@ class GridItem extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+// LocationHelper class for fetching the current location
+class LocationHelper {
+  static Future<String> getCurrentLocation() async {
+    // Your location fetching logic here
+    return 'Karachi'; // Mocking location as Karachi
   }
 }
