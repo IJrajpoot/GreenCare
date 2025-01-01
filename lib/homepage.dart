@@ -185,7 +185,7 @@ class GridMenu extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => CameraScreen(),
+                builder: (context) => CameraPage(),
               ),
             );
           },
