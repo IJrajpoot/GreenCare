@@ -9,11 +9,20 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool _isLoading = true; // Added to control the loading indicator
+
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 5), () {
-      Navigator.of(context).pushReplacementNamed('/login');
+    // Simulating a delay to show the loading indicator
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false; // Turn off loading indicator after delay
+      });
+      // Navigate to login page after loading
+      Timer(const Duration(seconds: 3), () {
+        Navigator.of(context).pushReplacementNamed('/login');
+      });
     });
   }
 
@@ -25,11 +34,18 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset(
-              'assets/images/logo.png',  // Replace with your logo asset path
-              width: 250,
-            ),
-            const SizedBox(height: 20),
+            if (_isLoading)
+              const CircularProgressIndicator(), // Loading indicator
+            if (!_isLoading) // Show logo and spacing only when not loading
+              Column(
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png', // Replace with your logo asset path
+                    width: 250,
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
           ],
         ),
       ),

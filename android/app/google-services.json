@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1006184410986",
+    "project_id": "greencare-59910",
+    "storage_bucket": "greencare-59910.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006184410986:android:0ab2f79c03fcb75f4cff13",
+        "android_client_info": {
+          "package_name": "com.example.greencare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdEpMlAiXbp-uAwlK2mNR5xgqiQSd-t0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

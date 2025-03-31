@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'help.dart';
-import 'weather_forecast.dart';
-import 'package:greencare/topbar.dart'; // Import TopBar if needed
+import 'package:greencare/help.dart';
+import 'package:greencare/history.dart';
+import 'package:greencare/pages/weatherupdate.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -11,81 +11,61 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-  int _selectedIndex = 0; // Track the selected index
+  int? _selectedIndex; // Track the selected index, initially null
 
-  void _onNavBarItemTapped(int index) {
+  void _onItemTapped(int index, Widget destinationPage) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; // Update the selected index
     });
 
-    switch (index) {
-      case 0:
-      // Handle home icon tap
-        print('Home icon tapped');
-        break;
-      case 1:
-      // Handle image upload icon tap
-        print('Image upload icon tapped');
-        break;
-      case 2:
-      // Navigate to WeatherForecastWidget
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Scaffold(
-              appBar: PreferredSize(
-                preferredSize: const Size.fromHeight(80.0),
-                child: TopBar(),
-              ),
-              body: const WeatherForecastWidget(),
-              bottomNavigationBar: const NavBar(),
-            ),
-          ),
-        );
-        break;
-      case 3:
-      // Handle history icon tap
-        print('History icon tapped');
-        break;
-      case 4:
-      // Handle help icon tap
-        print('Help icon tapped');
-        break;
-    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => destinationPage),
+    ).then((_) {
+      // Reset selected index when coming back to the main page
+      setState(() {
+        _selectedIndex = null;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-      color: const Color(0xFF3C7A17),
+      decoration: BoxDecoration(
+        color: const Color(0xFF3C7A17),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 5,
+          ),
+        ],
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           NavBarItem(
-            iconPath: 'assets/icons/home.png',
-            isSelected: _selectedIndex == 0,
-            onTap: () => _onNavBarItemTapped(0),
-          ),
-          NavBarItem(
             iconPath: 'assets/icons/camera.png',
-            isSelected: _selectedIndex == 1,
-            onTap: () => _onNavBarItemTapped(1),
+            isSelected: _selectedIndex == 0,
+            onTap: () => _onItemTapped(
+                0, const Placeholder()), // Replace with your camera page
           ),
           NavBarItem(
-            iconPath: 'assets/icons/weather.png',
-            isSelected: _selectedIndex == 2,
-            onTap: () => _onNavBarItemTapped(2),
+            iconPath: 'assets/icons/weather_module.png',
+            isSelected: _selectedIndex == 1,
+            onTap: () => _onItemTapped(1, const WeatherForecastPage()),
           ),
           NavBarItem(
             iconPath: 'assets/icons/history.png',
-            isSelected: _selectedIndex == 3,
-            onTap: () => _onNavBarItemTapped(3),
+            isSelected: _selectedIndex == 2,
+            onTap: () => _onItemTapped(2, const History()),
           ),
           NavBarItem(
             iconPath: 'assets/icons/help.png',
-            isSelected: _selectedIndex == 4,
-            onTap: () => _onNavBarItemTapped(4),
+            isSelected: _selectedIndex == 3,
+            onTap: () => _onItemTapped(3, const helppage()),
           ),
         ],
       ),
@@ -112,20 +92,30 @@ class NavBarItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          width: 60,
-          height: 60,
           decoration: BoxDecoration(
-            color: isSelected ? Colors.white : Colors.transparent,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Image.asset(
-              iconPath,
-              width: 40,
-              height: 40,
-              color: isSelected ? Colors.green : Colors.white,
-              // Non-selected icons appear white, selected ones turn green
+            border: Border(
+              bottom: BorderSide(
+                width: isSelected ? 3.0 : 0.0, // Highlight selected item
+                color: isSelected ? Colors.white : Colors.transparent,
+              ),
             ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.6), // Glow effect
+                      spreadRadius: 5,
+                      blurRadius: 15,
+                    )
+                  ]
+                : [], // No glow if not selected
+          ),
+          child: Image.asset(
+            iconPath,
+            width: 40,
+            height: 40,
+            color: isSelected
+                ? Colors.white
+                : Colors.grey[400], // Color based on selection
           ),
         ),
       ),

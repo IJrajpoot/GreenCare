@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'singup.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -11,10 +12,10 @@ class LoginPage extends StatelessWidget {
           children: <Widget>[
             // Top image
             Image.asset(
-              'assets/images/login.jpg',  // Replace with your top image asset path
+              'assets/images/login.jpg', // Replace with your top image asset path
               fit: BoxFit.cover,
               width: double.infinity,
-              height: 200,
+              height: 500,
             ),
             const SizedBox(height: 20),
 
@@ -26,9 +27,9 @@ class LoginPage extends StatelessWidget {
                 children: <Widget>[
                   const Center(
                     child: Text(
-                      'Login/Signin',
+                      'LOGIN',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -65,15 +66,33 @@ class LoginPage extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        backgroundColor: const Color(0xFF3C7A17),  // Change to your desired color
+                        backgroundColor:
+                            const Color(0xFF3C7A17), // Change to your desired color
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                       child: const Text(
                         'Login',
-                        style: TextStyle(fontSize: 16, color: Colors.white,),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
                       ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SignUpPage()),
+                      );
+                    },
+                    child: const Text(
+                      'Don\'t have an account? Sign up',
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
                     ),
                   ),
                 ],
